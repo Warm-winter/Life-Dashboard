@@ -1,0 +1,7 @@
+node_modules/
+dist/
+output/playwright/.artifacts/
+output/preview.log
+output/preview.err.log
+*.local
+.DS_Store

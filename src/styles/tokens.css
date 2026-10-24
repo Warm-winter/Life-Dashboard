@@ -1,0 +1,365 @@
+/**
+ * 设计令牌：六个预算档位 = 六套视觉基因。
+ * 业务组件只读令牌，不写任何「特效判断」；换档就是换变量。
+ */
+
+:root {
+  /* 版式 */
+  --maxw: 1240px;
+  --gutter: clamp(16px, 3vw, 32px);
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  --fs-hero: clamp(54px, 8vw, 118px);
+  --fs-h1: clamp(30px, 3.2vw, 46px);
+  --fs-h2: 20px;
+  --fs-h3: 16px;
+  --fs-body: 15px;
+  --fs-small: 13px;
+  --fs-micro: 11px;
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* 默认（≈¥3.50 彩灯）—— 未写 data-fx 时的兜底 */
+  --bg: linear-gradient(155deg, #241046 0%, #3d1a6e 40%, #6e1e63 75%, #8e2360 100%);
+  --bg-solid: #3d1a6e;
+  --surface: rgba(26, 8, 48, 0.64);
+  --surface-2: rgba(255, 255, 255, 0.14);
+  --ink: #ffffff;
+  --ink-2: #e3d4f5;
+  --ink-3: #b9a6cf;
+  --line: rgba(255, 255, 255, 0.22);
+  --line-strong: rgba(255, 255, 255, 0.42);
+  --accent: #ffd54a;
+  --accent-ink: #2a1600;
+  --accent-2: #59e3ff;
+  --danger: #ff5b7f;
+  --ok: #7cff6b;
+  --focus: #ffd54a;
+
+  --radius: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 0 0 1.5px rgba(255, 213, 74, 0.5), 0 0 32px -12px rgba(255, 45, 149, 0.7),
+    0 24px 40px -30px #000;
+  --shadow-pop: 0 18px 44px -18px rgba(0, 0, 0, 0.7);
+
+  --font-display: '华文琥珀', 'STHupo', '华文新魏', 'STXinwei', 'Noto Serif SC', serif;
+  --font-body: 'Noto Sans SC', '微软雅黑', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  --font-num: 'Cascadia Mono', 'Consolas', monospace;
+  --font-display-num: 'Digital-7 Mono', 'LCDMono2', 'Cascadia Mono', monospace;
+
+  --title-fill: linear-gradient(92deg, #ff2d95 0%, #ffd54a 28%, #59e3ff 55%, #7cff6b 78%, #ff2d95 100%);
+  --title-stroke: #ffffff;
+  --title-shadow: 0 2px 0 #7a1049, 0 4px 0 #4b0030, 0 0 22px rgba(255, 45, 149, 0.55);
+  --title-tracking: 0.02em;
+
+  --grid-color: rgba(255, 255, 255, 0.06);
+  --grid-size: 28px;
+  --paper-line: transparent;
+
+  --fx-rays: 0.22;
+  --fx-particles: 60;
+  --fx-wipe: 1;
+  --fx-marquee: 1;
+
+  --btn-face: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.06));
+  --btn-border: rgba(255, 255, 255, 0.32);
+  --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 2px 0 rgba(0, 0, 0, 0.35);
+
+  --input-bg: rgba(0, 0, 0, 0.22);
+  --input-border: rgba(255, 255, 255, 0.2);
+}
+
+/* ───────────────────────── ¥0.00 稿纸模式 ───────────────────────── */
+html[data-fx='0'] {
+  --bg: #f7f4ec;
+  --bg-solid: #f7f4ec;
+  --surface: #fffdf7;
+  --surface-2: #f1ecdd;
+  --ink: #1a1712;
+  --ink-2: #57503f;
+  --ink-3: #8b8371;
+  --line: #ded6c2;
+  --line-strong: #c3b99e;
+  --accent: #c8452d;
+  --accent-ink: #fff8f4;
+  --accent-2: #1f6f5c;
+  --danger: #b3261e;
+  --ok: #1f6f5c;
+  --focus: #1f6f5c;
+
+  --radius: 2px;
+  --radius-lg: 3px;
+  --radius-pill: 2px;
+
+  --shadow-card: none;
+  --shadow-pop: 0 18px 40px -24px rgba(30, 24, 12, 0.45);
+
+  --font-display: 'Source Han Serif SC Heavy', 'Noto Serif SC', '华文中宋', 'STZhongsong', 'Songti SC', serif;
+  --font-body: 'Noto Sans SC', '微软雅黑', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  --font-num: 'Cascadia Mono', 'Consolas', 'SFMono-Regular', monospace;
+  --font-display-num: 'Cascadia Mono', 'Consolas', monospace;
+
+  --title-fill: linear-gradient(#1a1712, #1a1712);
+  --title-stroke: transparent;
+  --title-shadow: none;
+  --title-tracking: 0.01em;
+
+  --grid-color: rgba(31, 111, 92, 0.11);
+  --grid-size: 28px;
+  --paper-line: rgba(200, 69, 45, 0.45);
+
+  --fx-rays: 0;
+  --fx-particles: 0;
+  --fx-wipe: 0;
+  --fx-marquee: 0;
+
+  --btn-face: transparent;
+  --btn-border: #1a1712;
+  --btn-shadow: none;
+
+  --input-bg: #fffdf7;
+  --input-border: #ded6c2;
+}
+
+/* ───────────────────────── ¥0.50 打印版 ───────────────────────── */
+html[data-fx='0.5'] {
+  --bg: linear-gradient(180deg, #fbf8f0, #f3eddd);
+  --bg-solid: #f7f2e6;
+  --surface: #fffdf7;
+  --surface-2: #f1ecdd;
+  --ink: #1a1712;
+  --ink-2: #57503f;
+  --ink-3: #8b8371;
+  --line: #ded6c2;
+  --line-strong: #c3b99e;
+  --accent: #c8452d;
+  --accent-ink: #fff8f4;
+  --accent-2: #1f6f5c;
+  --danger: #b3261e;
+  --ok: #1f6f5c;
+  --focus: #1f6f5c;
+
+  --radius: 3px;
+  --radius-lg: 4px;
+  --radius-pill: 3px;
+
+  --shadow-card: 0 1px 0 #e8e1ce, 0 18px 30px -26px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 18px 40px -24px rgba(30, 24, 12, 0.45);
+
+  --font-display: '华文中宋', 'STZhongsong', 'Source Han Serif SC Heavy', 'Noto Serif SC', serif;
+  --font-body: 'Noto Sans SC', '微软雅黑', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  --font-num: 'Cascadia Mono', 'Consolas', monospace;
+  --font-display-num: 'Cascadia Mono', 'Consolas', monospace;
+
+  --title-fill: linear-gradient(#1a1712, #1a1712);
+  --title-stroke: transparent;
+  --title-shadow: none;
+
+  --grid-color: rgba(31, 111, 92, 0.09);
+  --paper-line: rgba(200, 69, 45, 0.45);
+
+  --fx-rays: 0;
+  --fx-particles: 0;
+  --fx-wipe: 0;
+  --fx-marquee: 0;
+
+  --btn-face: #fdf9ee;
+  --btn-border: #c3b99e;
+  --btn-shadow: 0 1px 0 #ded6c2;
+
+  --input-bg: #fffdf7;
+  --input-border: #ded6c2;
+}
+
+/* ───────────────────────── ¥1.00 加亮 ───────────────────────── */
+html[data-fx='1'] {
+  --bg: linear-gradient(165deg, #fff9e8 0%, #fdefcd 55%, #fce7b8 100%);
+  --bg-solid: #fdf3da;
+  --surface: #fffdf5;
+  --surface-2: #fbf0d6;
+  --ink: #241a08;
+  --ink-2: #5e4a22;
+  --ink-3: #8b7444;
+  --line: #e7d19b;
+  --line-strong: #d3b56a;
+  --accent: #e4572e;
+  --accent-ink: #fff8f4;
+  --accent-2: #1f6f5c;
+  --danger: #b3261e;
+  --ok: #1f6f5c;
+  --focus: #b3261e;
+
+  --radius: 6px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 2px 0 rgba(228, 87, 46, 0.14), 0 16px 30px -24px rgba(120, 80, 0, 0.6);
+  --shadow-pop: 0 20px 44px -22px rgba(120, 80, 0, 0.5);
+
+  --font-display: '华文新魏', 'STXinwei', '华文中宋', 'STZhongsong', serif;
+  --font-body: 'Noto Sans SC', '微软雅黑', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  --font-num: 'Cascadia Mono', 'Consolas', monospace;
+  --font-display-num: 'Cascadia Mono', 'Consolas', monospace;
+
+  --title-fill: linear-gradient(180deg, #e4572e, #b23a12);
+  --title-stroke: transparent;
+  --title-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+
+  --grid-color: rgba(228, 87, 46, 0.09);
+  --paper-line: transparent;
+
+  --fx-rays: 0.06;
+  --fx-particles: 0;
+  --fx-wipe: 0;
+  --fx-marquee: 0;
+
+  --btn-face: linear-gradient(180deg, #ffe9b8, #f6d488);
+  --btn-border: #c99b3e;
+  --btn-shadow: 0 2px 0 #c99b3e;
+
+  --input-bg: #fffdf5;
+  --input-border: #e7d19b;
+}
+
+/* ───────────────────────── ¥2.00 烫金 ───────────────────────── */
+html[data-fx='2'] {
+  --bg: linear-gradient(160deg, #0d1b2e 0%, #16243d 55%, #1d2b45 100%);
+  --bg-solid: #16243d;
+  --surface: rgba(255, 255, 255, 0.055);
+  --surface-2: rgba(255, 213, 74, 0.1);
+  --ink: #fdf3d8;
+  --ink-2: #cabb92;
+  --ink-3: #96896a;
+  --line: rgba(255, 213, 74, 0.26);
+  --line-strong: rgba(255, 213, 74, 0.5);
+  --accent: #ffd54a;
+  --accent-ink: #22180a;
+  --accent-2: #59e3ff;
+  --danger: #ff7a7a;
+  --ok: #7cff6b;
+  --focus: #ffd54a;
+
+  --radius: 8px;
+  --radius-lg: 10px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 0 0 1px rgba(255, 213, 74, 0.18), 0 18px 36px -24px #000;
+  --shadow-pop: 0 22px 48px -20px #000;
+
+  --font-display: '华文琥珀', 'STHupo', '华文新魏', 'STXinwei', serif;
+  --font-body: 'Noto Sans SC', '微软雅黑', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-num: 'Cascadia Mono', 'Consolas', monospace;
+  --font-display-num: 'Digital-7 Mono', 'LCDMono2', 'Cascadia Mono', monospace;
+
+  --title-fill: linear-gradient(180deg, #fff6cf 0%, #ffd54a 52%, #d98b00 100%);
+  --title-stroke: #3a2400;
+  --title-shadow: 0 3px 0 #6b4700, 0 0 26px rgba(255, 213, 74, 0.45);
+  --title-tracking: 0.04em;
+
+  --grid-color: rgba(255, 213, 74, 0.07);
+  --paper-line: transparent;
+
+  --fx-rays: 0.14;
+  --fx-particles: 24;
+  --fx-wipe: 0;
+  --fx-marquee: 1;
+
+  --btn-face: linear-gradient(180deg, #ffe9a8, #e8b53c);
+  --btn-border: #8a5f00;
+  --btn-shadow: inset 0 1px 0 #fff6cf, 0 2px 0 #6b4700;
+
+  --input-bg: rgba(0, 0, 0, 0.28);
+  --input-border: rgba(255, 213, 74, 0.26);
+}
+
+/* ───────────────────────── ¥3.50 彩灯 ───────────────────────── */
+html[data-fx='3.5'] {
+  --bg: linear-gradient(155deg, #241046 0%, #3d1a6e 40%, #6e1e63 75%, #8e2360 100%);
+  --bg-solid: #3d1a6e;
+  --surface: rgba(26, 8, 48, 0.64);
+  --surface-2: rgba(255, 255, 255, 0.14);
+  --ink: #ffffff;
+  --ink-2: #e3d4f5;
+  --ink-3: #b9a6cf;
+  --line: rgba(255, 255, 255, 0.22);
+  --line-strong: rgba(255, 255, 255, 0.42);
+  --accent: #ffd54a;
+  --accent-ink: #2a1600;
+  --accent-2: #59e3ff;
+  --danger: #ff5b7f;
+  --ok: #7cff6b;
+  --focus: #ffd54a;
+
+  --radius: 12px;
+  --radius-lg: 14px;
+
+  --title-fill: linear-gradient(92deg, #ff2d95 0%, #ffd54a 28%, #59e3ff 55%, #7cff6b 78%, #ff2d95 100%);
+  --title-stroke: #ffffff;
+
+  --fx-rays: 0.22;
+  --fx-particles: 60;
+  --fx-wipe: 1;
+  --fx-marquee: 1;
+
+  --btn-face: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.06));
+  --btn-border: rgba(255, 255, 255, 0.34);
+  --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 0 rgba(0, 0, 0, 0.35);
+
+  --input-bg: rgba(0, 0, 0, 0.24);
+  --input-border: rgba(255, 255, 255, 0.22);
+}
+
+/* ───────────────────────── ¥5.00 五毛钱 MAX ───────────────────────── */
+html[data-fx='5'] {
+  --bg: linear-gradient(140deg, #1a0033 0%, #4b0082 32%, #a80072 68%, #e0187f 100%);
+  --bg-solid: #4b0082;
+  --surface: rgba(28, 0, 46, 0.74);
+  --surface-2: rgba(255, 255, 255, 0.2);
+  --ink: #ffffff;
+  --ink-2: #ffe9fb;
+  --ink-3: #e9b8dc;
+  --line: #ffd54a;
+  --line-strong: #ffd54a;
+  --accent: #ffd54a;
+  --accent-ink: #2a0a00;
+  --accent-2: #59e3ff;
+  --danger: #ff3355;
+  --ok: #9dff5b;
+  --focus: #ffffff;
+
+  --radius: 14px;
+  --radius-lg: 16px;
+
+  --font-display: '华文琥珀', 'STHupo', '华文新魏', 'STXinwei', serif;
+
+  --title-fill: linear-gradient(92deg, #fff200 0%, #ff9a00 22%, #ff2d95 48%, #a855f7 72%, #59e3ff 100%);
+  --title-stroke: #ffffff;
+  --title-shadow: 0 2px 0 #8a0050, 0 4px 0 #5a0033, 0 6px 0 #2c0019, 0 0 30px rgba(255, 45, 149, 0.9);
+  --title-tracking: 0.03em;
+
+  --grid-color: rgba(255, 255, 255, 0.07);
+
+  --fx-rays: 0.42;
+  --fx-particles: 110;
+  --fx-wipe: 1;
+  --fx-marquee: 1;
+
+  --shadow-card: 0 0 0 3px #ffd54a, 0 6px 0 3px rgba(0, 0, 0, 0.42), 0 0 44px -4px #ff2d95;
+  --shadow-pop: 0 24px 60px -18px #000;
+
+  --btn-face: linear-gradient(180deg, #fff6a8, #ffb300 45%, #ff2d95 100%);
+  --btn-border: #5a0033;
+  --btn-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.85), 0 4px 0 #5a0033;
+
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --input-border: #ffd54a;
+}
